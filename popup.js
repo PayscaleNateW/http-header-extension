@@ -1,31 +1,36 @@
   
-var header = document.getElementById("url");
 var detailsTable = document.getElementById("details");
 var headerTable = document.getElementById("headers");
+var mainPanel = document.getElementById("main-panel");
 
 var query = { active: true, currentWindow: true };
 function updateTable(tabs) {
   url = tabs[0].url;
-  header.innerHTML = 'URL: <a href="' + url + '">' + url + '</a>';
   var details = JSON.parse(localStorage.getItem(url));
-  var date = new Date(details.timeStamp).toTimeString();
-  detailsTable.innerHTML = "<tr> \
+  var time = new Date(details.timeStamp).toTimeString();
+
+  if (details.statusCode == 200) {
+    mainPanel.className = "panel panel-success";
+  } else {
+    mainPanel.className = "panel panel-danger";
+  }
+  detailsTable.innerHTML = '<tr> \
                               <td>URL</td> \
-                              <td>" + url + "</td> \
+                              <td><a href="' + url + '">' + url +'</a></td> \
                             <tr> \
                             <tr> \
                               <td>Method</td> \
-                              <td>" + details.method + "</td> \
+                              <td>' + details.method + '</td> \
                             <tr> \
                             <tr> \
                               <td>Status Code</td> \
-                              <td>" + details.statusCode + "</td> \
+                              <td>' + details.statusCode + '</td> \
                             <tr> \
                             <tr> \
                               <td>Time</td> \
-                              <td>" + date + "</td> \
+                              <td>' + time + '</td> \
                             <tr> \
-                           "
+                           ';
   var responseHeaders = details.responseHeaders;
   if (responseHeaders) {
     headerTable.innerHTML = "";
